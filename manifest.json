@@ -14,7 +14,8 @@
       "client_id": "CLIENT_ID",
       "scopes": [
         "https://www.googleapis.com/auth/drive.appdata",
-      "https://www.googleapis.com/auth/drive.file"
+        "https://www.googleapis.com/auth/drive.file",
+        "https://www.googleapis.com/auth/youtube.upload"
       ]
   },
   "browser_action": {

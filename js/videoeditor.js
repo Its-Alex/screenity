@@ -154,8 +154,7 @@ $(document).ready(function(){
             if (!token) {
               return;
             }
-            $("#share span").html(chrome.i18n.getMessage("saving"));
-            $("#share").css("pointer-events", "none");
+            $("#share-drive").css("pointer-events", "none");
             var metadata = {
                 name: 'video.mp4',
                 mimeType: 'video/mp4'
@@ -174,12 +173,54 @@ $(document).ready(function(){
             xhr.responseType = 'json';
             xhr.onload = () => {
                 var fileId = xhr.response.id;
-                $("#share span").html("Save to Drive");
-                $("#share").css("pointer-events", "all");
+                $("#share-drive").css("pointer-events", "all");
                 
                 // Open file in Drive in a new tab
                 chrome.tabs.create({
                      url: "https://drive.google.com/file/d/"+fileId
+                });
+            };
+            xhr.send(form);
+        });
+    }
+
+    // Save on Youtube
+    function saveYoutube() {
+        downloaded = true;
+        chrome.identity.getAuthToken({ 'interactive': true }, function(token) {
+            if (!token) {
+              return;
+            }
+            $("#share-youtube").css("pointer-events", "none");
+            var metadata = {
+                snippet: {
+                  categoryId: "22",
+                  description: "Description of uploaded video.",
+                  title: 'video.mp4'
+                },
+                status: {
+                  privacyStatus: "unlisted"
+                }
+            };
+            var superBuffer = new Blob(blobs, {
+                type: 'video/mp4'
+            });
+            var form = new FormData();
+            form.append('metadata', new Blob([JSON.stringify(metadata)], {type: 'application/json'}));
+            form.append('file', superBuffer);
+
+            // Upload to Youtube
+            var xhr = new XMLHttpRequest();
+          xhr.open('POST', 'https://www.googleapis.com/upload/youtube/v3/videos?part=snippet%2Cstatus&uploadType=multipart');
+            xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+            xhr.responseType = 'json';
+            xhr.onload = () => {
+                const fileId = xhr.response.id;
+                $("#share-youtube").css("pointer-events", "all");
+                
+                // Open video in a new tab
+                chrome.tabs.create({
+                    url: "https://www.youtube.com/watch?v="+fileId
                 });
             };
             xhr.send(form);
@@ -238,8 +279,13 @@ $(document).ready(function(){
     });
     
     // Save on Drive
-    $("#share").on("click", function(){
+    $("#share-drive").on("click", function(){
         saveDrive();
+    });
+    
+    // Save on Drive
+    $("#share-youtube").on("click", function(){
+        saveYoutube();
     });
     
     // Revert changes made to the video

@@ -180,7 +180,7 @@ h2 {
     height: 100%;
 }
 #download {
-    width: 45%;
+    width: 30%;
     height: 47px;
     border-radius: 5px;
     background-color: #2D89F4;
@@ -193,8 +193,8 @@ h2 {
     color: #FFF;
     transition: all .25s cubic-bezier(.05,.03,.35,1);
 }
-#share {
-    width: 50%;
+#share-drive, #share-youtube {
+    width: 30%;
     height: 47px;
     margin-left: 2%;
     border-radius: 5px;
@@ -208,15 +208,17 @@ h2 {
     color: #69708A;
     transition: all .25s cubic-bezier(.05,.03,.35,1);
 }
-#download:hover, #share:hover {
+#download:hover, #share-drive:hover, #share-youtube:hover {
     opacity: .7;
     cursor: pointer;
 }
-#download img, #share img {
+#download img, #share-drive img, #share-youtube img {
     vertical-align: middle;
     display: inline-block;
-    margin-right: 5px;
     width: 20px;
+}
+#share-youtube img {
+    width: 30px;
 }
 #download img {
     margin-top: -2px;
